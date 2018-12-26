@@ -1,8 +1,0 @@
-setup.py
-dewar/dewar.py
-dewar/helpers.py
-dewar.egg-info/PKG-INFO
-dewar.egg-info/SOURCES.txt
-dewar.egg-info/dependency_links.txt
-dewar.egg-info/requires.txt
-dewar.egg-info/top_level.txt
