@@ -6,14 +6,14 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='dewar',
-    version='0.1.2',
+    version='0.1.4',
     
     description='Static Site Generator, like flask',
     long_description=long_description,
     long_description_content_type='text/markdown',
     
     url='http://github.com/tfpk/dewar',
-    download_url='http://github.com/tfpk/dewar/archive/v0.1.2.tar.gz',
+    download_url='http://github.com/tfpk/dewar/archive/v0.1.4.tar.gz',
 
     author='tfpk',
     author_email='tomkunc0@gmail.org',
