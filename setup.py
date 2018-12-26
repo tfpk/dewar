@@ -5,8 +5,9 @@ setup(
     version='0.1',
     description='Static Site Generator, like flask',
     url='http://github.com/tfpk/dewar',
-     author='tfpk',
-    author_email='tom.kunc@kinesis.org',
+    download_url='http://github.com/tfpk/dewar/archive/v0.1.0.tar.gz',
+    author='tfpk',
+    author_email='tomkunc0@gmail.org',
     license='All Rights Reserved',
     packages=['dewar'],
     install_requires=[
