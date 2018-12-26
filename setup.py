@@ -1,5 +1,5 @@
 from setuptools import setup
-
+from os import path
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
@@ -28,7 +28,7 @@ setup(
     test_suite='',
     tests_require=[
         'pytest'
-    ]
+    ],
 
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -37,7 +37,7 @@ setup(
 
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
-    ]
+    ],
 
     keywords='dewar static site flask web',
 )
