@@ -35,9 +35,11 @@
             
   <div class="section" id="api">
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-dewar.dewar">
+<span id="dewar"></span><h2>Dewar<a class="headerlink" href="#module-dewar.dewar" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
-<dt id="dewar.Site">
-<em class="property">class </em><code class="descclassname">dewar.</code><code class="descname">Site</code><span class="sig-paren">(</span><em>path=None</em>, <em>create_backups=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.Site" title="Permalink to this definition">¶</a></dt>
+<dt id="dewar.dewar.Site">
+<em class="property">class </em><code class="descclassname">dewar.dewar.</code><code class="descname">Site</code><span class="sig-paren">(</span><em>path=None</em>, <em>create_backups=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.dewar.Site" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the root class of any dewar project, that encapsulates
 all the pages in a project.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -51,8 +53,8 @@ directories.</td>
 </tbody>
 </table>
 <dl class="method">
-<dt id="dewar.Site.close">
-<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.Site.close" title="Permalink to this definition">¶</a></dt>
+<dt id="dewar.dewar.Site.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.dewar.Site.close" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a site from the global list of sites.</p>
 <p>This functionality is rarely needed, as most applications will
 only involve one site. If you need it though, this will prevent
@@ -64,8 +66,8 @@ this site.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="dewar.Site.register">
-<code class="descname">register</code><span class="sig-paren">(</span><em>path</em>, <em>validate=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.Site.register" title="Permalink to this definition">¶</a></dt>
+<dt id="dewar.dewar.Site.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>path</em>, <em>validate=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site.register"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.dewar.Site.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>A decorator that registers a page function with a site.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -84,8 +86,8 @@ a value that can create a page/pages.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="dewar.Site.render">
-<code class="descname">render</code><span class="sig-paren">(</span><em>path='./dist/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.Site.render" title="Permalink to this definition">¶</a></dt>
+<dt id="dewar.dewar.Site.render">
+<code class="descname">render</code><span class="sig-paren">(</span><em>path='./dist/'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/dewar.html#Site.render"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.dewar.Site.render" title="Permalink to this definition">¶</a></dt>
 <dd><p>Write the site to a path.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -99,6 +101,332 @@ a value that can create a page/pages.</li>
 
 </dd></dl>
 
+</div>
+<div class="section" id="module-dewar.exceptions">
+<span id="exceptions"></span><h2>Exceptions<a class="headerlink" href="#module-dewar.exceptions" title="Permalink to this headline">¶</a></h2>
+<dl class="exception">
+<dt id="dewar.exceptions.ValidationError">
+<em class="property">exception </em><code class="descclassname">dewar.exceptions.</code><code class="descname">ValidationError</code><a class="reference internal" href="_modules/dewar/exceptions.html#ValidationError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.exceptions.ValidationError" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+<div class="section" id="module-dewar.helpers">
+<span id="helpers"></span><h2>Helpers<a class="headerlink" href="#module-dewar.helpers" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dewar.helpers.add_wrapper">
+<code class="descclassname">dewar.helpers.</code><code class="descname">add_wrapper</code><span class="sig-paren">(</span><em>content</em>, <em>wrapper='\n&lt;!doctype html&gt;\n\n&lt;html lang=&quot;en&quot;&gt;\n&lt;head&gt;\n  &lt;meta charset=&quot;utf-8&quot;&gt;\n&lt;/head&gt;\n&lt;body&gt;\n{content}\n&lt;/body&gt;\n&lt;/html&gt;\n'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#add_wrapper"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.add_wrapper" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a basic HTML template around some given text.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>content</strong> (<em>str</em>) – The HTML to fill in.</li>
+<li><strong>wrapper</strong> (<em>str</em>) – A string that contains ‘{content}’.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">the wrapped content.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.freeze_func">
+<code class="descclassname">dewar.helpers.</code><code class="descname">freeze_func</code><span class="sig-paren">(</span><em>arg=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#freeze_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.freeze_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>A decorator for a function, that causes it to return the same
+result every time it’s called (given the same arguments).</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="nd">@freeze_func</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">def</span> <span class="nf">f</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">f</span><span class="o">.</span><span class="n">num</span> <span class="o">+=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="k">return</span> <span class="n">f</span><span class="o">.</span><span class="n">num</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">num</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">()</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="p">()</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">f</span><span class="o">.</span><span class="n">num</span>
+<span class="go">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.load_data">
+<code class="descclassname">dewar.helpers.</code><code class="descname">load_data</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#load_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.load_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the text of a data file at a path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – the path of the data file, relative to the 
+data directory of the site.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">the text of the data.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.load_data_dir">
+<code class="descclassname">dewar.helpers.</code><code class="descname">load_data_dir</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#load_data_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.load_data_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load the text of every file in the data directory.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<em>str</em><em> or </em><em>pathlib.Path</em>) – the path of the data directory, relative to the 
+data directory of the site.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a dictionary of ‘file_name’: ‘text in file’</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.load_json">
+<code class="descclassname">dewar.helpers.</code><code class="descname">load_json</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#load_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.load_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load json from text</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>str</em>) – the text of some data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a dictionary that matches the json found in the text.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.load_json_data">
+<code class="descclassname">dewar.helpers.</code><code class="descname">load_json_data</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#load_json_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.load_json_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load json from a path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> – the path to some data (relative to a site’s data dir)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a dictionary that matches the json found at the path.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.load_md">
+<code class="descclassname">dewar.helpers.</code><code class="descname">load_md</code><span class="sig-paren">(</span><em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#load_md"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.load_md" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load markdown into html from text</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>data</strong> (<em>str</em>) – the text of some data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string with html that represents the markdown in a path.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">dict</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.load_md_data">
+<code class="descclassname">dewar.helpers.</code><code class="descname">load_md_data</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#load_md_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.load_md_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Load md into html from a path</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> – the path to some data (relative to a site’s data dir)</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">a string with html that represents the markdown in the file.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">str</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.rel_url_to">
+<code class="descclassname">dewar.helpers.</code><code class="descname">rel_url_to</code><span class="sig-paren">(</span><em>path</em>, <em>start=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#rel_url_to"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.rel_url_to" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path, return a link from the current site to that path.</p>
+<p>This uses <cite>get_closest_path()</cite> to find the starting point if 
+start is None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>pathlib.Path</em><em> or </em><em>str</em>) – the path to link to.</li>
+<li><strong>start</strong> (<em>pathlib.Path</em><em> or </em><em>str</em>) – The path to start from, (or the closest path in the
+the stack if None).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A relative path from <cite>start</cite> to <cite>path</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.render_template">
+<code class="descclassname">dewar.helpers.</code><code class="descname">render_template</code><span class="sig-paren">(</span><em>template</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#render_template"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.render_template" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path to a template, and arguments to fill in,
+render that template.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>template</strong> (<em>path.Pathlib</em><em>, </em><em>str</em>) – a path to a jinja template (relative to the 
+template directory.)</li>
+<li><strong>**kwargs</strong> – <p>the variables to be set as the context for the jinja
+template.</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.static_url">
+<code class="descclassname">dewar.helpers.</code><code class="descname">static_url</code><span class="sig-paren">(</span><em>path</em>, <em>start=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#static_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.static_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path relative to the static folder, return a path
+relative to the current function</p>
+<p>This will raise a warning if the static file doesn’t exist.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>pathlib.Path</em><em> or </em><em>str</em>) – the path to link to (relative to the static folder).</li>
+<li><strong>start</strong> (<em>pathlib.Path</em><em> or </em><em>str</em>) – The path to start from, (or the closest path in the
+the stack if None).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A relative path from <cite>start</cite> to <cite>path</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.helpers.url_for">
+<code class="descclassname">dewar.helpers.</code><code class="descname">url_for</code><span class="sig-paren">(</span><em>function</em>, <em>start=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#url_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.url_for" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a function (that takes <cite>**kwargs</cite> as arguments), returns
+the relative path from start to the output of that function.</p>
+<p>This uses <cite>get_closest_path()</cite> to find the starting point if 
+start is None.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>function</strong> (<em>function</em>) – The page function to link to.</li>
+<li><strong>start</strong> (<em>pathlib.Path</em><em>, </em><em>str</em>) – The path to start from, (or the closest path in the
+the stack if None).</li>
+<li><strong>kwargs</strong> – the arguments to <cite>function</cite>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A relative path from <cite>start</cite> to <cite>path</cite></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">str</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dewar.parser">
+<span id="parser"></span><h2>Parser<a class="headerlink" href="#module-dewar.parser" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dewar.parser.fill_path">
+<code class="descclassname">dewar.parser.</code><code class="descname">fill_path</code><span class="sig-paren">(</span><em>path</em>, <em>params</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/parser.html#fill_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.parser.fill_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path formatted like /&lt;thing&gt;/&lt;page&gt;.html,
+and a list of params, return the filled path.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>path</strong> (<em>str</em>) – a path containing “&lt;variables&gt;”.</li>
+<li><strong>params</strong> – a list of strings to fill into the path.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">list</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="dewar.parser.parse_path">
+<code class="descclassname">dewar.parser.</code><code class="descname">parse_path</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/parser.html#parse_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.parser.parse_path" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a path formatted like /&lt;category&gt;/&lt;page&gt;.html, 
+will return [‘category’, ‘page’].</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-dewar.validator">
+<span id="validator"></span><h2>Validator<a class="headerlink" href="#module-dewar.validator" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-dewar._internal">
+<span id="internal-functions"></span><h2>Internal Functions<a class="headerlink" href="#module-dewar._internal" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="dewar._internal.InfoTuple">
+<em class="property">class </em><code class="descclassname">dewar._internal.</code><code class="descname">InfoTuple</code><span class="sig-paren">(</span><em>function_name</em>, <em>variables</em><span class="sig-paren">)</span><a class="headerlink" href="#dewar._internal.InfoTuple" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="attribute">
+<dt id="dewar._internal.InfoTuple.function_name">
+<code class="descname">function_name</code><a class="headerlink" href="#dewar._internal.InfoTuple.function_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 0</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="dewar._internal.InfoTuple.variables">
+<code class="descname">variables</code><a class="headerlink" href="#dewar._internal.InfoTuple.variables" title="Permalink to this definition">¶</a></dt>
+<dd><p>Alias for field number 1</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 </div>
 
 
@@ -120,7 +448,15 @@ a value that can create a page/pages.</li>
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-dewar.dewar">Dewar</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dewar.exceptions">Exceptions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dewar.helpers">Helpers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dewar.parser">Parser</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dewar.validator">Validator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-dewar._internal">Internal Functions</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">

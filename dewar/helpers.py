@@ -45,7 +45,7 @@ def render_template(template, **kwargs):
                      template directory.)
     :type template: path.Pathlib, str
 
-    :param **kwargs: the variables to be set as the context for the jinja
+    :param kwargs: the variables to be set as the context for the jinja
                    template.
     """
     template = site._jinja_env.get_template(template)

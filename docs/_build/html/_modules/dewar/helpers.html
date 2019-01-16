@@ -1,0 +1,363 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>dewar.helpers &#8212; dewar 0.3.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dewar.helpers</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">relpath</span>
+
+<span class="kn">from</span> <span class="nn">dewar</span> <span class="k">import</span> <span class="n">dewar</span><span class="p">,</span> <span class="n">site</span>
+<span class="kn">from</span> <span class="nn">dewar.parser</span> <span class="k">import</span> <span class="n">fill_path</span><span class="p">,</span> <span class="n">parse_path</span>
+<span class="kn">from</span> <span class="nn">dewar._internal</span> <span class="k">import</span> <span class="n">get_closest_path</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">from</span> <span class="nn">markdown</span> <span class="k">import</span> <span class="n">markdown</span>
+
+<span class="c1"># anything -&gt; final return</span>
+<span class="n">WRAPPER</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">&lt;!doctype html&gt;</span>
+
+<span class="s2">&lt;html lang=&quot;en&quot;&gt;</span>
+<span class="s2">&lt;head&gt;</span>
+<span class="s2">  &lt;meta charset=&quot;utf-8&quot;&gt;</span>
+<span class="s2">&lt;/head&gt;</span>
+<span class="s2">&lt;body&gt;</span>
+<span class="si">{content}</span><span class="s2"></span>
+<span class="s2">&lt;/body&gt;</span>
+<span class="s2">&lt;/html&gt;</span>
+<span class="s2">&quot;&quot;&quot;</span>
+
+
+<div class="viewcode-block" id="add_wrapper"><a class="viewcode-back" href="../../api.html#dewar.helpers.add_wrapper">[docs]</a><span class="k">def</span> <span class="nf">add_wrapper</span><span class="p">(</span><span class="n">content</span><span class="p">,</span> <span class="n">wrapper</span><span class="o">=</span><span class="n">WRAPPER</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add a basic HTML template around some given text.</span>
+
+<span class="sd">    :param content: The HTML to fill in.</span>
+<span class="sd">    :type content: str</span>
+<span class="sd">    :param wrapper: A string that contains &#39;{content}&#39;.</span>
+<span class="sd">    :type wrapper: str</span>
+
+<span class="sd">    :returns: the wrapped content.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">content</span><span class="o">=</span><span class="n">content</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="render_template"><a class="viewcode-back" href="../../api.html#dewar.helpers.render_template">[docs]</a><span class="k">def</span> <span class="nf">render_template</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a path to a template, and arguments to fill in,</span>
+<span class="sd">    render that template.</span>
+<span class="sd">    </span>
+<span class="sd">    :param template: a path to a jinja template (relative to the </span>
+<span class="sd">                     template directory.)</span>
+<span class="sd">    :type template: path.Pathlib, str</span>
+
+<span class="sd">    :param **kwargs: the variables to be set as the context for the jinja</span>
+<span class="sd">                   template.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">_jinja_env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">template</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<span class="c1"># load from saved directories</span>
+
+
+<span class="n">DATA</span> <span class="o">=</span> <span class="s1">&#39;data&#39;</span>
+
+
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../../api.html#dewar.helpers.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load the text of a data file at a path</span>
+
+<span class="sd">    :param path: the path of the data file, relative to the </span>
+<span class="sd">                 data directory of the site.</span>
+<span class="sd">    :type path: str or pathlib.Path</span>
+
+<span class="sd">    :returns: the text of the data.</span>
+<span class="sd">    :rtype: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">dewar</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="n">DATA</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data_path</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The given path is not a file.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="load_data_dir"><a class="viewcode-back" href="../../api.html#dewar.helpers.load_data_dir">[docs]</a><span class="k">def</span> <span class="nf">load_data_dir</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load the text of every file in the data directory.</span>
+
+<span class="sd">    :param path: the path of the data directory, relative to the </span>
+<span class="sd">                 data directory of the site.</span>
+<span class="sd">    :type path: str or pathlib.Path</span>
+
+<span class="sd">    :returns: a dictionary of &#39;file_name&#39;: &#39;text in file&#39; </span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_path</span> <span class="o">=</span> <span class="n">dewar</span><span class="o">.</span><span class="n">site</span><span class="o">.</span><span class="n">path</span> <span class="o">/</span> <span class="n">DATA</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">data_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;The given path is not a directory.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="nb">str</span><span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">relative_to</span><span class="p">(</span><span class="n">data_path</span><span class="p">)):</span> <span class="n">p</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">data_path</span><span class="o">.</span><span class="n">iterdir</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">is_file</span><span class="p">()</span>
+    <span class="p">}</span></div>
+
+
+<span class="c1"># interpret data</span>
+<div class="viewcode-block" id="load_json"><a class="viewcode-back" href="../../api.html#dewar.helpers.load_json">[docs]</a><span class="k">def</span> <span class="nf">load_json</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load json from text</span>
+<span class="sd">    </span>
+<span class="sd">    :param data: the text of some data</span>
+<span class="sd">    :type data: str</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: a dictionary that matches the json found in the text.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_json_data"><a class="viewcode-back" href="../../api.html#dewar.helpers.load_json_data">[docs]</a><span class="k">def</span> <span class="nf">load_json_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load json from a path</span>
+<span class="sd">    </span>
+<span class="sd">    :param path: the path to some data (relative to a site&#39;s data dir)</span>
+<span class="sd">    :type data: pathlib.Path or str</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: a dictionary that matches the json found at the path.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">load_json</span><span class="p">(</span><span class="n">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="load_md"><a class="viewcode-back" href="../../api.html#dewar.helpers.load_md">[docs]</a><span class="k">def</span> <span class="nf">load_md</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load markdown into html from text</span>
+<span class="sd">    </span>
+<span class="sd">    :param data: the text of some data</span>
+<span class="sd">    :type data: str</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: a string with html that represents the markdown in a path.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">markdown</span><span class="p">(</span><span class="n">data</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="load_md_data"><a class="viewcode-back" href="../../api.html#dewar.helpers.load_md_data">[docs]</a><span class="k">def</span> <span class="nf">load_md_data</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Load md into html from a path</span>
+<span class="sd">    </span>
+<span class="sd">    :param path: the path to some data (relative to a site&#39;s data dir)</span>
+<span class="sd">    :type data: pathlib.Path or str</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: a string with html that represents the markdown in the file.</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">load_md</span><span class="p">(</span><span class="n">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">))</span></div>
+
+<span class="c1"># links</span>
+
+
+<span class="n">FILL_VARS_WITH</span> <span class="o">=</span> <span class="s1">&#39;xUNFILLED_VARx&#39;</span>
+<div class="viewcode-block" id="rel_url_to"><a class="viewcode-back" href="../../api.html#dewar.helpers.rel_url_to">[docs]</a><span class="k">def</span> <span class="nf">rel_url_to</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a path, return a link from the current site to that path.</span>
+<span class="sd">    </span>
+<span class="sd">    This uses `get_closest_path()` to find the starting point if </span>
+<span class="sd">    start is None.</span>
+<span class="sd">    </span>
+<span class="sd">    :param path: the path to link to.</span>
+<span class="sd">    :type path: pathlib.Path or str</span>
+
+<span class="sd">    :param start: The path to start from, (or the closest path in the</span>
+<span class="sd">                  the stack if None).</span>
+<span class="sd">    :type start: pathlib.Path or str</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: A relative path from `start` to `path`</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">get_closest_path</span><span class="p">()</span>
+        <span class="n">num_path_elems</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parse_path</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
+
+        <span class="n">start</span> <span class="o">=</span> <span class="n">fill_path</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="p">[</span><span class="n">FILL_VARS_WITH</span><span class="p">]</span><span class="o">*</span><span class="n">num_path_elems</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="url_for"><a class="viewcode-back" href="../../api.html#dewar.helpers.url_for">[docs]</a><span class="k">def</span> <span class="nf">url_for</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a function (that takes `**kwargs` as arguments), returns</span>
+<span class="sd">    the relative path from start to the output of that function.</span>
+<span class="sd">    </span>
+<span class="sd">    This uses `get_closest_path()` to find the starting point if </span>
+<span class="sd">    start is None.</span>
+<span class="sd">    </span>
+<span class="sd">    :param function: The page function to link to.</span>
+<span class="sd">    :type function: function</span>
+
+<span class="sd">    :param start: The path to start from, (or the closest path in the</span>
+<span class="sd">                  the stack if None).</span>
+<span class="sd">    :type start: pathlib.Path, str</span>
+
+<span class="sd">    :param kwargs: the arguments to `function`.</span>
+
+<span class="sd">    :returns: A relative path from `start` to `path`</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">path</span>
+    <span class="k">return</span> <span class="n">rel_url_to</span><span class="p">(</span><span class="n">fill_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="static_url"><a class="viewcode-back" href="../../api.html#dewar.helpers.static_url">[docs]</a><span class="k">def</span> <span class="nf">static_url</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a path relative to the static folder, return a path</span>
+<span class="sd">    relative to the current function</span>
+<span class="sd">    </span>
+<span class="sd">    This will raise a warning if the static file doesn&#39;t exist.</span>
+
+<span class="sd">    :param path: the path to link to (relative to the static folder).</span>
+<span class="sd">    :type path: pathlib.Path or str</span>
+
+<span class="sd">    :param start: The path to start from, (or the closest path in the</span>
+<span class="sd">                  the stack if None).</span>
+<span class="sd">    :type start: pathlib.Path or str</span>
+<span class="sd">    </span>
+<span class="sd">    :returns: A relative path from `start` to `path`</span>
+<span class="sd">    :rtype: str</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">site</span><span class="o">.</span><span class="n">static_path</span> <span class="o">/</span> <span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">))</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="ne">Warning</span><span class="p">(</span><span class="s1">&#39;Could not find the path given.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rel_url_to</span><span class="p">(</span><span class="n">site</span><span class="o">.</span><span class="n">static_path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span></div>
+
+
+<span class="n">kwd_mark</span> <span class="o">=</span> <span class="p">(</span><span class="nb">object</span><span class="p">(),)</span>
+
+
+<div class="viewcode-block" id="freeze_func"><a class="viewcode-back" href="../../api.html#dewar.helpers.freeze_func">[docs]</a><span class="k">def</span> <span class="nf">freeze_func</span><span class="p">(</span><span class="n">arg</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;A decorator for a function, that causes it to return the same</span>
+<span class="sd">    result every time it&#39;s called (given the same arguments).</span>
+
+<span class="sd">    &gt;&gt;&gt; @freeze_func()</span>
+<span class="sd">    &gt;&gt;&gt; def f()</span>
+<span class="sd">    &gt;&gt;&gt;     f.num += 1</span>
+<span class="sd">    &gt;&gt;&gt;     return f.num</span>
+<span class="sd">    &gt;&gt;&gt; f.num = 0</span>
+<span class="sd">    &gt;&gt;&gt; f()</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; f()</span>
+<span class="sd">    1</span>
+<span class="sd">    &gt;&gt;&gt; f.num</span>
+<span class="sd">    2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+            <span class="c1"># key function taken from functools.lru_cache()</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">args</span> <span class="o">+</span> <span class="n">kwd_mark</span> <span class="o">+</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">_returned</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">wrapper</span><span class="o">.</span><span class="n">_returned</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+            <span class="n">val</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="n">wrapper</span><span class="o">.</span><span class="n">_returned</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">val</span>
+
+            <span class="k">return</span> <span class="n">val</span>
+        <span class="n">wrapper</span><span class="o">.</span><span class="n">_returned</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="c1"># works both as @freeze_func, @freeze_func()</span>
+    <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">arg</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">decorator</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">decorator</span></div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../index.html">dewar</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Tom Kunc.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
