@@ -1,0 +1,5 @@
+API
+***
+
+.. autoclass:: dewar.Site
+   :members:
