@@ -18,16 +18,23 @@ URL = 'https://github.com/tfpk/dewar'
 EMAIL = 'tomkunc0@gmail.com'
 AUTHOR = 'tfpk'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.2.0'
+VERSION = '0.3.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
-
+    'markdown',
+    'proxy-tools',
+    'jinja2',
 ]
 
 # What packages are optional?
 EXTRAS = {
-    # 'fancy feature': ['django'],
+    'dev': [
+        'sphinx',
+    ]
+    'docs': [
+        'sphinx',
+    ]
 }
 
 # The rest you shouldn't have to touch too much :)
@@ -87,9 +94,8 @@ class UploadCommand(Command):
         self.status('Pushing git tags…')
         os.system('git tag v{0}'.format(about['__version__']))
         os.system('git push --tags')
-        
-        sys.exit()
 
+        sys.exit()
 
 # Where the magic happens:
 setup(
@@ -112,19 +118,18 @@ setup(
     install_requires=REQUIRED,
     extras_require=EXTRAS,
     include_package_data=True,
-    license='All Rights Reserved',
+    license='Apache 2.0',
     classifiers=[
         # Trove classifiers
         # Full list: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+        'License :: OSI Approved :: Apache Software License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: Implementation :: CPython',
         'Programming Language :: Python :: Implementation :: PyPy'
     ],
-    # $ setup.py publish support.
     cmdclass={
         'upload': UploadCommand,
     },
 )
-

@@ -6,8 +6,14 @@ name = "pypi"
 [packages]
 pytest = "*"
 "e1839a8" = {path = ".", editable = true}
+proxy-tools = "*"
+markdown = "*"
+"jinja2" = "*"
 
 [dev-packages]
+sphinx = "*"
+mkdocs = "*"
+pycodestyle = "*"
 
 [requires]
 python_version = "3.6"
