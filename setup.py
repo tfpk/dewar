@@ -18,7 +18,7 @@ URL = 'https://github.com/tfpk/dewar'
 EMAIL = 'tomkunc0@gmail.com'
 AUTHOR = 'tfpk'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '0.3.0'
+VERSION = '1.0.0'
 
 # What packages are required for this module to be executed?
 REQUIRED = [
@@ -31,7 +31,7 @@ REQUIRED = [
 EXTRAS = {
     'dev': [
         'sphinx',
-    ]
+    ],
     'docs': [
         'sphinx',
     ]

@@ -5,7 +5,6 @@ name = "pypi"
 
 [packages]
 pytest = "*"
-"e1839a8" = {path = ".", editable = true}
 proxy-tools = "*"
 markdown = "*"
 "jinja2" = "*"
