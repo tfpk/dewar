@@ -9,8 +9,7 @@ from dewar.exceptions import ValidationError
 from fixtures.site import site, full_site
 
 @pytest.mark.parametrize("page_name", [
-    ("index.html"),
-    ("inside_dir/index.html")
+    ("index.html"), ("inside_dir/index.html")
 ])
 def test_single_render(tmp_path, site, page_name):
     PAGE_TEXT = "test"

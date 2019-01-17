@@ -25,7 +25,11 @@ def _frame_info_iterator():
     while frame:
         frame_vars = copy.copy(frame.f_globals)
         frame_vars.update(frame.f_locals)
-        yield InfoTuple(inspect.getframeinfo(frame).function, frame_vars)
+        try:
+            yield InfoTuple(inspect.getframeinfo(frame).function, frame_vars)
+        except IndexError:
+            # means there's no code context (i.e., you're inside jinja)
+            pass
         frame = frame.f_back
 
 

@@ -3,6 +3,17 @@ from dewar.parser import parse_path
 
 
 def validate_page(func):
+    """Given a page function which returned a value.
+    
+    :param val: the return from `func`.
+    :type val: str, dict
+
+    :param func: the function that's being used.
+    :type func: function
+
+    :return: Whether or not the return value given is valid.
+    :rtype: bool
+    """
     def validate_dict(val, path_elements, func_name):
         def has_correct_type(key):
             "Return if key is of correct type"
@@ -29,17 +40,6 @@ def validate_page(func):
 
         return True
 
-    """Given a page function which returned a value.
-    
-    :param val: the return from `func`
-    :type val: str, dict
-
-    :param func: the function that's being used
-    :type func: function
-
-    :return: Whether or not the return value given is valid
-    :rtype: bool
-    """
     name = func.name
     path = func.path
     val = func()

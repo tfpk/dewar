@@ -2,6 +2,7 @@ from pathlib import Path
 from os.path import relpath
 
 from dewar import dewar, site
+from dewar.jinja import add_jinja_global
 from dewar.parser import fill_path, parse_path
 from dewar._internal import get_closest_path
 import json
@@ -12,9 +13,7 @@ from markdown import markdown
 WRAPPER = """
 <!doctype html>
 
-<html lang="en">
-<head>
-  <meta charset="utf-8">
+<html lang="en"> <head> <meta charset="utf-8">
 </head>
 <body>
 {content}
@@ -45,7 +44,7 @@ def render_template(template, **kwargs):
                      template directory.)
     :type template: path.Pathlib, str
 
-    :param kwargs: the variables to be set as the context for the jinja
+    :param keywords: the variables to be set as the context for the jinja
                    template.
     """
     template = site._jinja_env.get_template(template)
@@ -147,6 +146,7 @@ def load_md_data(path):
 
 
 FILL_VARS_WITH = 'xUNFILLED_VARx'
+@add_jinja_global
 def rel_url_to(path, start=None):
     """Given a path, return a link from the current site to that path.
     
@@ -156,8 +156,8 @@ def rel_url_to(path, start=None):
     :param path: the path to link to.
     :type path: pathlib.Path or str
 
-    :param start: The path to start from, (or the closest path in the
-                  the stack if None).
+    :param start: The path to start from (a directory, not a file),
+                  or the closest path in the stack if None).
     :type start: pathlib.Path or str
     
     :returns: A relative path from `start` to `path`
@@ -172,15 +172,16 @@ def rel_url_to(path, start=None):
     return relpath(path, start=start)
 
 
+@add_jinja_global
 def url_for(function, start=None, **kwargs):
-    """Given a function (that takes `**kwargs` as arguments), returns
+    """Given a function (that takes `kwargs` as arguments), returns
     the relative path from start to the output of that function.
     
     This uses `get_closest_path()` to find the starting point if 
     start is None.
     
-    :param function: The page function to link to.
-    :type function: function
+    :param function: The page function to link to, or its name.
+    :type function: function, str
 
     :param start: The path to start from, (or the closest path in the
                   the stack if None).
@@ -191,10 +192,21 @@ def url_for(function, start=None, **kwargs):
     :returns: A relative path from `start` to `path`
     :rtype: str
     """
-    path = function.path
+    path = None
+    if isinstance(function, str):
+        for func in site.registered_functions:
+            if func.name == function:
+                path = func.path
+                break
+        else:
+            raise RuntimeError(f"Could not find page function named '{function}'")
+    else:
+        path = function.path
+
     return rel_url_to(fill_path(path, kwargs.values()), start=start)
 
 
+@add_jinja_global
 def static_url(path, start=None):
     """Given a path relative to the static folder, return a path
     relative to the current function

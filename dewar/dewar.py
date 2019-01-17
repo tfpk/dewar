@@ -7,6 +7,7 @@ import time
 
 from proxy_tools import module_property
 
+from dewar.jinja import JINJA_FUNCTIONS
 from dewar.parser import fill_path
 from dewar.validator import validate_page
 from dewar._internal import get_caller_location, get_closest_site
@@ -61,6 +62,9 @@ class Site:
             loader=FileSystemLoader(str(self.template_path), followlinks=True),
             autoescape=select_autoescape(['html', 'xml'])
         )
+        for func in JINJA_FUNCTIONS:
+            self._jinja_env.globals[func.__name__] = func
+        self._jinja_env.globals['site'] = self
 
         if '_site_instances' not in globals():
             global _site_instances

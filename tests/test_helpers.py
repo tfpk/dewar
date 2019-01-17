@@ -19,7 +19,7 @@ def test_site_property(tmp_path):
     site_instance.render(path=tmp_path)
 
 
-def test_site_property_error():
+def test_site_property_error(): 
     with pytest.raises(RuntimeError, match="could not be found"):
         # assert necessary becasue proxy only errs on attr access
         assert(hasattr(dewar.site, 'deregister'))
@@ -110,7 +110,8 @@ def test_load_md_data(full_site):
 
 
 def test_render_template(full_site):
-    assert(render_template('template.html', string="Output") == "<h1> Output </h1>")
+    OUTPUT = f"<h1> Output </h1> {full_site.static_path} ../end.html"
+    assert(render_template('template.html', string="Output") == OUTPUT)
 
 
 def test_url_for(tmp_path, site):
@@ -118,20 +119,30 @@ def test_url_for(tmp_path, site):
     def path_a():
         assert(path_a)
         assert(url_for(path_b) == '../second/path')
+        assert(url_for('path_b') == '../second/path')
         assert(url_for(path_c, with_var='path') == '../third/path')
+        assert(url_for('path_c', with_var='path') == '../third/path')
+        with pytest.raises(RuntimeError, match='path_d'):
+            url = url_for('path_d')
+            url = url_for('path_d', random='variable')
         return ''
 
     @site.register('second/path')
     def path_b():
         assert(url_for(path_a) == '../../path')
+        assert(url_for('path_a') == '../../path')
         assert(url_for(path_c, with_var='path') == '../../third/path')
+        assert(url_for('path_c', with_var='path') == '../../third/path')
         return ''
 
     @site.register('third/<with_var>', validate=False)
     def path_c():
         assert(url_for(path_a) == '../../path')
+        assert(url_for('path_a') == '../../path')
         assert(url_for(path_b) == '../../second/path')
+        assert(url_for('path_b') == '../../second/path')
         assert(url_for(path_c, with_var='path') == '../path')
+        assert(url_for('path_c', with_var='path') == '../path')
         return ''
 
     path_a()
