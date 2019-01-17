@@ -23,8 +23,7 @@ Parser
 
 Validator
 =========
-.. automodule:: dewar.validator
-   :members:
+.. function:: dewar.validator.validate_page
 
 Internal Functions
 ==================

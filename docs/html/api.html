@@ -1,4 +1,3 @@
-
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
@@ -305,9 +304,8 @@ render that template.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>template</strong> (<em>path.Pathlib</em><em>, </em><em>str</em>) – a path to a jinja template (relative to the 
 template directory.)</li>
-<li><strong>**kwargs</strong> – <p>the variables to be set as the context for the jinja
-template.</p>
-</li>
+<li><strong>keywords</strong> – the variables to be set as the context for the jinja
+template.</li>
 </ul>
 </td>
 </tr>
@@ -345,7 +343,7 @@ the stack if None).</li>
 <dl class="function">
 <dt id="dewar.helpers.url_for">
 <code class="descclassname">dewar.helpers.</code><code class="descname">url_for</code><span class="sig-paren">(</span><em>function</em>, <em>start=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/dewar/helpers.html#url_for"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#dewar.helpers.url_for" title="Permalink to this definition">¶</a></dt>
-<dd><p>Given a function (that takes <cite>**kwargs</cite> as arguments), returns
+<dd><p>Given a function (that takes <cite>kwargs</cite> as arguments), returns
 the relative path from start to the output of that function.</p>
 <p>This uses <cite>get_closest_path()</cite> to find the starting point if 
 start is None.</p>
@@ -354,7 +352,7 @@ start is None.</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>function</strong> (<em>function</em>) – The page function to link to.</li>
+<li><strong>function</strong> (<em>function</em><em>, </em><em>str</em>) – The page function to link to, or its name.</li>
 <li><strong>start</strong> (<em>pathlib.Path</em><em>, </em><em>str</em>) – The path to start from, (or the closest path in the
 the stack if None).</li>
 <li><strong>kwargs</strong> – the arguments to <cite>function</cite>.</li>
@@ -404,8 +402,13 @@ will return [‘category’, ‘page’].</p>
 </dd></dl>
 
 </div>
-<div class="section" id="module-dewar.validator">
-<span id="validator"></span><h2>Validator<a class="headerlink" href="#module-dewar.validator" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="validator">
+<h2>Validator<a class="headerlink" href="#validator" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="dewar.parser.dewar.validator.validate_page">
+<code class="descclassname">dewar.validator.</code><code class="descname">validate_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dewar.parser.dewar.validator.validate_page" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-dewar._internal">
 <span id="internal-functions"></span><h2>Internal Functions<a class="headerlink" href="#module-dewar._internal" title="Permalink to this headline">¶</a></h2>
@@ -453,7 +456,7 @@ will return [‘category’, ‘page’].</p>
 <li class="toctree-l2"><a class="reference internal" href="#module-dewar.exceptions">Exceptions</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dewar.helpers">Helpers</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dewar.parser">Parser</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-dewar.validator">Validator</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#validator">Validator</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-dewar._internal">Internal Functions</a></li>
 </ul>
 </li>

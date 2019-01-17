@@ -42,6 +42,7 @@
 
 <span class="kn">from</span> <span class="nn">proxy_tools</span> <span class="k">import</span> <span class="n">module_property</span>
 
+<span class="kn">from</span> <span class="nn">dewar.jinja</span> <span class="k">import</span> <span class="n">JINJA_FUNCTIONS</span>
 <span class="kn">from</span> <span class="nn">dewar.parser</span> <span class="k">import</span> <span class="n">fill_path</span>
 <span class="kn">from</span> <span class="nn">dewar.validator</span> <span class="k">import</span> <span class="n">validate_page</span>
 <span class="kn">from</span> <span class="nn">dewar._internal</span> <span class="k">import</span> <span class="n">get_caller_location</span><span class="p">,</span> <span class="n">get_closest_site</span>
@@ -71,7 +72,7 @@
     <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s2">&quot;Site could not be found.&quot;</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="Site"><a class="viewcode-back" href="../../api.html#dewar.Site">[docs]</a><span class="k">class</span> <span class="nc">Site</span><span class="p">:</span>
+<div class="viewcode-block" id="Site"><a class="viewcode-back" href="../../api.html#dewar.dewar.Site">[docs]</a><span class="k">class</span> <span class="nc">Site</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;This is the root class of any dewar project, that encapsulates</span>
 <span class="sd">    all the pages in a project.</span>
 
@@ -96,13 +97,16 @@
             <span class="n">loader</span><span class="o">=</span><span class="n">FileSystemLoader</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">template_path</span><span class="p">),</span> <span class="n">followlinks</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
             <span class="n">autoescape</span><span class="o">=</span><span class="n">select_autoescape</span><span class="p">([</span><span class="s1">&#39;html&#39;</span><span class="p">,</span> <span class="s1">&#39;xml&#39;</span><span class="p">])</span>
         <span class="p">)</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">JINJA_FUNCTIONS</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_jinja_env</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">]</span> <span class="o">=</span> <span class="n">func</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_jinja_env</span><span class="o">.</span><span class="n">globals</span><span class="p">[</span><span class="s1">&#39;site&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span>
 
         <span class="k">if</span> <span class="s1">&#39;_site_instances&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="nb">globals</span><span class="p">():</span>
             <span class="k">global</span> <span class="n">_site_instances</span>
             <span class="n">_site_instances</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">_site_instances</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Site.register"><a class="viewcode-back" href="../../api.html#dewar.Site.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Site.register"><a class="viewcode-back" href="../../api.html#dewar.dewar.Site.register">[docs]</a>    <span class="k">def</span> <span class="nf">register</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;A decorator that registers a page function with a site.</span>
 
 <span class="sd">        :param path: The path to that page in the rendered site.</span>
@@ -138,7 +142,7 @@
 
         <span class="k">return</span> <span class="n">decorator</span></div>
 
-<div class="viewcode-block" id="Site.close"><a class="viewcode-back" href="../../api.html#dewar.Site.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Site.close"><a class="viewcode-back" href="../../api.html#dewar.dewar.Site.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Remove a site from the global list of sites.</span>
 
 <span class="sd">        This functionality is rarely needed, as most applications will</span>
@@ -178,7 +182,7 @@
             <span class="k">return</span>
         <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">static_path</span><span class="p">,</span> <span class="n">static_render_path</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Site.render"><a class="viewcode-back" href="../../api.html#dewar.Site.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;./dist/&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="Site.render"><a class="viewcode-back" href="../../api.html#dewar.dewar.Site.render">[docs]</a>    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="o">=</span><span class="s1">&#39;./dist/&#39;</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Write the site to a path.</span>
 
 <span class="sd">        :param path: The path to write to.</span>

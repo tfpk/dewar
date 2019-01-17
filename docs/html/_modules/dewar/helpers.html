@@ -37,6 +37,7 @@
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">relpath</span>
 
 <span class="kn">from</span> <span class="nn">dewar</span> <span class="k">import</span> <span class="n">dewar</span><span class="p">,</span> <span class="n">site</span>
+<span class="kn">from</span> <span class="nn">dewar.jinja</span> <span class="k">import</span> <span class="n">add_jinja_global</span>
 <span class="kn">from</span> <span class="nn">dewar.parser</span> <span class="k">import</span> <span class="n">fill_path</span><span class="p">,</span> <span class="n">parse_path</span>
 <span class="kn">from</span> <span class="nn">dewar._internal</span> <span class="k">import</span> <span class="n">get_closest_path</span>
 <span class="kn">import</span> <span class="nn">json</span>
@@ -80,7 +81,7 @@
 <span class="sd">                     template directory.)</span>
 <span class="sd">    :type template: path.Pathlib, str</span>
 
-<span class="sd">    :param **kwargs: the variables to be set as the context for the jinja</span>
+<span class="sd">    :param keywords: the variables to be set as the context for the jinja</span>
 <span class="sd">                   template.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">template</span> <span class="o">=</span> <span class="n">site</span><span class="o">.</span><span class="n">_jinja_env</span><span class="o">.</span><span class="n">get_template</span><span class="p">(</span><span class="n">template</span><span class="p">)</span>
@@ -182,7 +183,8 @@
 
 
 <span class="n">FILL_VARS_WITH</span> <span class="o">=</span> <span class="s1">&#39;xUNFILLED_VARx&#39;</span>
-<div class="viewcode-block" id="rel_url_to"><a class="viewcode-back" href="../../api.html#dewar.helpers.rel_url_to">[docs]</a><span class="k">def</span> <span class="nf">rel_url_to</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="rel_url_to"><a class="viewcode-back" href="../../api.html#dewar.helpers.rel_url_to">[docs]</a><span class="nd">@add_jinja_global</span>
+<span class="k">def</span> <span class="nf">rel_url_to</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a path, return a link from the current site to that path.</span>
 <span class="sd">    </span>
 <span class="sd">    This uses `get_closest_path()` to find the starting point if </span>
@@ -207,15 +209,16 @@
     <span class="k">return</span> <span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="url_for"><a class="viewcode-back" href="../../api.html#dewar.helpers.url_for">[docs]</a><span class="k">def</span> <span class="nf">url_for</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Given a function (that takes `**kwargs` as arguments), returns</span>
+<div class="viewcode-block" id="url_for"><a class="viewcode-back" href="../../api.html#dewar.helpers.url_for">[docs]</a><span class="nd">@add_jinja_global</span>
+<span class="k">def</span> <span class="nf">url_for</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Given a function (that takes `kwargs` as arguments), returns</span>
 <span class="sd">    the relative path from start to the output of that function.</span>
 <span class="sd">    </span>
 <span class="sd">    This uses `get_closest_path()` to find the starting point if </span>
 <span class="sd">    start is None.</span>
 <span class="sd">    </span>
-<span class="sd">    :param function: The page function to link to.</span>
-<span class="sd">    :type function: function</span>
+<span class="sd">    :param function: The page function to link to, or its name.</span>
+<span class="sd">    :type function: function, str</span>
 
 <span class="sd">    :param start: The path to start from, (or the closest path in the</span>
 <span class="sd">                  the stack if None).</span>
@@ -226,11 +229,22 @@
 <span class="sd">    :returns: A relative path from `start` to `path`</span>
 <span class="sd">    :rtype: str</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">path</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">path</span>
+    <span class="n">path</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">function</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">site</span><span class="o">.</span><span class="n">registered_functions</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">func</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="n">function</span><span class="p">:</span>
+                <span class="n">path</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">path</span>
+                <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;Could not find page function named &#39;</span><span class="si">{function}</span><span class="s2">&#39;&quot;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">function</span><span class="o">.</span><span class="n">path</span>
+
     <span class="k">return</span> <span class="n">rel_url_to</span><span class="p">(</span><span class="n">fill_path</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="static_url"><a class="viewcode-back" href="../../api.html#dewar.helpers.static_url">[docs]</a><span class="k">def</span> <span class="nf">static_url</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="static_url"><a class="viewcode-back" href="../../api.html#dewar.helpers.static_url">[docs]</a><span class="nd">@add_jinja_global</span>
+<span class="k">def</span> <span class="nf">static_url</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Given a path relative to the static folder, return a path</span>
 <span class="sd">    relative to the current function</span>
 <span class="sd">    </span>
