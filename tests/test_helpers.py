@@ -118,10 +118,10 @@ def test_url_for(tmp_path, site):
     @site.register('path')
     def path_a():
         assert(path_a)
-        assert(url_for(path_b) == '../second/path')
-        assert(url_for('path_b') == '../second/path')
-        assert(url_for(path_c, with_var='path') == '../third/path')
-        assert(url_for('path_c', with_var='path') == '../third/path')
+        assert(url_for(path_b) == 'second/path')
+        assert(url_for('path_b') == 'second/path')
+        assert(url_for(path_c, with_var='path') == 'third/path')
+        assert(url_for('path_c', with_var='path') == 'third/path')
         with pytest.raises(RuntimeError, match='path_d'):
             url = url_for('path_d')
             url = url_for('path_d', random='variable')
@@ -129,20 +129,20 @@ def test_url_for(tmp_path, site):
 
     @site.register('second/path')
     def path_b():
-        assert(url_for(path_a) == '../../path')
-        assert(url_for('path_a') == '../../path')
-        assert(url_for(path_c, with_var='path') == '../../third/path')
-        assert(url_for('path_c', with_var='path') == '../../third/path')
+        assert(url_for(path_a) == '../path')
+        assert(url_for('path_a') == '../path')
+        assert(url_for(path_c, with_var='path') == '../third/path')
+        assert(url_for('path_c', with_var='path') == '../third/path')
         return ''
 
     @site.register('third/<with_var>', validate=False)
     def path_c():
-        assert(url_for(path_a) == '../../path')
-        assert(url_for('path_a') == '../../path')
-        assert(url_for(path_b) == '../../second/path')
-        assert(url_for('path_b') == '../../second/path')
-        assert(url_for(path_c, with_var='path') == '../path')
-        assert(url_for('path_c', with_var='path') == '../path')
+        assert(url_for(path_a) == '../path')
+        assert(url_for('path_a') == '../path')
+        assert(url_for(path_b) == '../second/path')
+        assert(url_for('path_b') == '../second/path')
+        assert(url_for(path_c, with_var='path') == 'path')
+        assert(url_for('path_c', with_var='path') == 'path')
         return ''
 
     path_a()

@@ -168,6 +168,7 @@ def rel_url_to(path, start=None):
         num_path_elems = len(parse_path(start))
 
         start = fill_path(start, [FILL_VARS_WITH]*num_path_elems)
+        start = Path(start).parent
 
     return relpath(path, start=start)
 
