@@ -48,9 +48,7 @@
 <span class="n">WRAPPER</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">&lt;!doctype html&gt;</span>
 
-<span class="s2">&lt;html lang=&quot;en&quot;&gt;</span>
-<span class="s2">&lt;head&gt;</span>
-<span class="s2">  &lt;meta charset=&quot;utf-8&quot;&gt;</span>
+<span class="s2">&lt;html lang=&quot;en&quot;&gt; &lt;head&gt; &lt;meta charset=&quot;utf-8&quot;&gt;</span>
 <span class="s2">&lt;/head&gt;</span>
 <span class="s2">&lt;body&gt;</span>
 <span class="si">{content}</span><span class="s2"></span>
@@ -193,8 +191,8 @@
 <span class="sd">    :param path: the path to link to.</span>
 <span class="sd">    :type path: pathlib.Path or str</span>
 
-<span class="sd">    :param start: The path to start from, (or the closest path in the</span>
-<span class="sd">                  the stack if None).</span>
+<span class="sd">    :param start: The path to start from (a directory, not a file),</span>
+<span class="sd">                  or the closest path in the stack if None).</span>
 <span class="sd">    :type start: pathlib.Path or str</span>
 <span class="sd">    </span>
 <span class="sd">    :returns: A relative path from `start` to `path`</span>
@@ -205,6 +203,7 @@
         <span class="n">num_path_elems</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">parse_path</span><span class="p">(</span><span class="n">start</span><span class="p">))</span>
 
         <span class="n">start</span> <span class="o">=</span> <span class="n">fill_path</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="p">[</span><span class="n">FILL_VARS_WITH</span><span class="p">]</span><span class="o">*</span><span class="n">num_path_elems</span><span class="p">)</span>
+        <span class="n">start</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">start</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span>
 
     <span class="k">return</span> <span class="n">relpath</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="n">start</span><span class="p">)</span></div>
 
