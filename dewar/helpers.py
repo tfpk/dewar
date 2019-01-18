@@ -6,6 +6,7 @@ from dewar.jinja import add_jinja_global
 from dewar.parser import fill_path, parse_path
 from dewar._internal import get_closest_path
 import json
+import warnings
 
 from markdown import markdown
 
@@ -225,7 +226,7 @@ def static_url(path, start=None):
     :rtype: str
     """
     if not (site.static_path / Path(path)).is_file():
-        raise Warning('Could not find the path given.')
+        raise warnings.warn('Could not find the path given.')
     return rel_url_to(site.static_path, start=start)
 
 
