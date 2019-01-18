@@ -152,7 +152,9 @@ def test_url_for(tmp_path, site):
 def test_static_url(full_site):
     @full_site.register('path.html')
     def path():
-        assert(static_url('txt.txt') == 'static/txt.txt')
+        assert(static_url('static_file') == 'static/static_file')
         with pytest.warns(Warning, match='Could not find'):
             assert(static_url('fake.txt') == 'static/fake.txt')
+        return ''
 
+    path()

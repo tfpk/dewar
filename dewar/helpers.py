@@ -227,7 +227,7 @@ def static_url(path, start=None):
     """
     if not (site.static_path / Path(path)).is_file():
         warnings.warn(Warning('Could not find the path given.'))
-    return rel_url_to(site.static_path, start=start)
+    return rel_url_to('static/' + path, start=start)
 
 
 kwd_mark = (object(),)
