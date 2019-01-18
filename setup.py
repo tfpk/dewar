@@ -18,7 +18,7 @@ URL = 'https://github.com/tfpk/dewar'
 EMAIL = 'tomkunc0@gmail.com'
 AUTHOR = 'tfpk'
 REQUIRES_PYTHON = '>=3.6.0'
-VERSION = '1.1.2'
+VERSION = '1.1.3'
 
 # What packages are required for this module to be executed?
 REQUIRED = [

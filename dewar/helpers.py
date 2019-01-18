@@ -226,7 +226,7 @@ def static_url(path, start=None):
     :rtype: str
     """
     if not (site.static_path / Path(path)).is_file():
-        raise warnings.warn('Could not find the path given.')
+        raise warnings.warn('Could not find the path given.', Warning)
     return rel_url_to(site.static_path, start=start)
 
 
