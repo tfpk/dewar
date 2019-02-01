@@ -44,6 +44,8 @@ class Site:
     :param path: the path where the directories with site files can
                  be found, such as the `templates/` and `static/`
                  directories.
+
+    :param create_backups: whether to create backups of old sites.
     """
 
     def __init__(self, path=None, create_backups=True):
