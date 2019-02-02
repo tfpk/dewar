@@ -155,6 +155,8 @@ def test_static_url(full_site):
         assert(static_url('static_file') == 'static/static_file')
         with pytest.warns(Warning, match='Could not find'):
             assert(static_url('fake.txt') == 'static/fake.txt')
+        full_site.static_render_path = ''
+        assert(static_url('static_file') == 'static_file')
         return ''
 
     path()

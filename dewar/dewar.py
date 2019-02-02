@@ -46,11 +46,14 @@ class Site:
                  directories.
 
     :param create_backups: whether to create backups of old sites.
+    
+    :param static_render_path: whether to create backups of old sites.
     """
 
-    def __init__(self, path=None, create_backups=True):
+    def __init__(self, path=None, static_render_path='static', create_backups=True):
         self.registered_functions = set()
         self.create_backups = create_backups
+        self.static_render_path = static_render_path
 
         if path:
             self.path = Path(path)
@@ -144,7 +147,7 @@ class Site:
 
         :param path: The path to write to.
         """
-        static_render_path = path / 'static'
+        static_render_path = path / self.static_render_path
         if not self.static_path.exists():
             return
         shutil.copytree(self.static_path, static_render_path)

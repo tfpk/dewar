@@ -187,3 +187,9 @@ def test_recursion_error(site, call_self):
 def test_static_move(tmp_path, full_site):
     full_site.render(path=tmp_path)
     assert(Path(tmp_path / 'static' / 'static_file').is_file())
+
+
+def test_static_move_with_changed_render_path(tmp_path, full_site):
+    full_site.static_render_path = ''
+    full_site.render(path=tmp_path)
+    assert(Path(tmp_path / 'static_file').is_file())
