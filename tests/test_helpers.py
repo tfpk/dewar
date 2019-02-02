@@ -38,7 +38,7 @@ def test_freeze_func_no_parens():
         return f"function called at: {time.time()}"
 
     first_call = test()
-    time.sleep(0.001)
+    time.sleep(0.001) 
     second_call = test()
     assert(first_call == second_call)
 
@@ -102,15 +102,19 @@ datum = "datum"
 l = [1, 2, 3]
 ~~~
 # Title\n_italic_ **bold**
-    """
-    TEST_STRING_NOSTARTSEP = TEST_STRING.replace('~~~', '', 1)
-    TEST_STRING_RESULT = "<h1>Title</h1>\n<p><em>italic</em> <strong>bold</strong></p>"
 
-    test_results = [load_pymd(TEST_STRING), load_pymd(TEST_STRING_NOSTARTSEP)]
-    for result_pair in test_results:
-        data, md = result_pair
-        assert(data == {'datum': 'datum', 'l': [1, 2, 3]})
-        assert(md == TEST_STRING_RESULT)
+    test()
+
+    """
+    TEST_STRING_RESULT = (
+        "<h1>Title</h1>\n"
+        "<p><em>italic</em> <strong>bold</strong></p>\n"
+        "<pre><code>test()\n</code></pre>"
+    )
+
+    data, md = load_pymd(TEST_STRING)
+    assert(data == {'datum': 'datum', 'l': [1, 2, 3]})
+    assert(md == TEST_STRING_RESULT)
 
 def test_load_pymd_data(full_site):
     TEST_STRING_RESULT = "<h1>Title</h1>\n<p><em>italic</em> <strong>bold</strong></p>"
@@ -125,12 +129,14 @@ def test_load_md():
     TEST_STRING_RESULT = "<h1>Title</h1>\n<p><em>italic</em> <strong>bold</strong></p>"
 
     assert(load_md(TEST_STRING) == TEST_STRING_RESULT)
+    assert(load_pymd(TEST_STRING) == ({},TEST_STRING_RESULT))
 
 
 def test_load_md_data(full_site):
     TEST_STRING_RESULT = "<h1>Title</h1>\n<p><em>italic</em> <strong>bold</strong></p>"
 
     assert(load_md_data('test_md') == TEST_STRING_RESULT)
+    assert(load_pymd_data('test_md') == ({},TEST_STRING_RESULT))
 
 
 def test_render_template(full_site):

@@ -133,18 +133,21 @@ def load_pymd(data):
     """
     pycode = ""
     md = ""
-    add_line_to_pycode = True
+    add_line_to_pycode = False
+    contains_py_block = False
     for line in data.split('\n'):
-        if not line.strip():
-            continue
         if line.strip().startswith('~~~'):
+            contains_py_block = True
             if pycode:
                 add_line_to_pycode = False
-
+            else:
+                add_line_to_pycode = True
         elif add_line_to_pycode:
             pycode += line + '\n'
         else:
             md += line + '\n'
+    if not contains_py_block:
+        return {}, load_md(md)
 
     exec_locals = {}
     exec(pycode, {}, exec_locals)
