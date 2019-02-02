@@ -95,6 +95,30 @@ def test_load_json():
 def test_load_json_data(full_site):
     assert(load_json_data('test_json') == {'a': ['b', 'c']})
 
+def test_load_pymd():
+    TEST_STRING = """
+~~~
+datum = "datum"
+l = [1, 2, 3]
+~~~
+# Title\n_italic_ **bold**
+    """
+    TEST_STRING_NOSTARTSEP = TEST_STRING.replace('~~~', '', 1)
+    TEST_STRING_RESULT = "<h1>Title</h1>\n<p><em>italic</em> <strong>bold</strong></p>"
+
+    test_results = [load_pymd(TEST_STRING), load_pymd(TEST_STRING_NOSTARTSEP)]
+    for result_pair in test_results:
+        data, md = result_pair
+        assert(data == {'datum': 'datum', 'l': [1, 2, 3]})
+        assert(md == TEST_STRING_RESULT)
+
+def test_load_pymd_data(full_site):
+    TEST_STRING_RESULT = "<h1>Title</h1>\n<p><em>italic</em> <strong>bold</strong></p>"
+
+    assert(load_pymd_data('test_pymd') == (
+        {'thing': 'thing', 'l': [1, 2, 3]}, 
+        TEST_STRING_RESULT
+    ))
 
 def test_load_md():
     TEST_STRING = "# Title\n_italic_ **bold**"

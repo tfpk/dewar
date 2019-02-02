@@ -120,16 +120,70 @@ def load_json_data(path):
     return load_json(load_data(path))
 
 
-def load_md(data):
+def load_pymd(data):
     """Load markdown into html from text
     
     :param data: the text of some data
     :type data: str
     
+    :returns: a tuple of a dict representing the locals defined
+              in the file, and a string with html that represents
+              the markdown in the file.
+    :rtype: tuple(dict, str)
+    """
+    pycode = ""
+    md = ""
+    add_line_to_pycode = True
+    for line in data.split('\n'):
+        if not line.strip():
+            continue
+        if line.strip().startswith('~~~'):
+            if pycode:
+                add_line_to_pycode = False
+
+        elif add_line_to_pycode:
+            pycode += line + '\n'
+        else:
+            md += line + '\n'
+
+    exec_locals = {}
+    exec(pycode, {}, exec_locals)
+    return exec_locals, load_md(md)
+
+
+
+def load_pymd_data(path):
+    """Load md into html from a path
+    
+    :param path: the path to some data (relative to a site's data dir)
+    :type data: pathlib.Path or str
+    
+    :returns: a tuple of a dict representing the locals defined
+              in the file, and a string with html that represents
+              the markdown in the file.
+    :rtype: tuple(dict, str)
+    """
+    return load_pymd(load_data(path))
+
+
+def load_md(data, ignore_pymd=True):
+    """Load markdown into html from text
+    
+    :param data: the text of some data
+    :type data: str
+    
+    :param ignore_pymd: whether to remove any pymd data in the file
+    :type ignore_pymd: bool
+    
     :returns: a string with html that represents the markdown in a path.
     :rtype: dict
     """
-    return markdown(data)
+    
+    if ignore_pymd:
+        return markdown(data)
+
+    _, md = load_pymd(data)
+    return md
 
 
 def load_md_data(path):
